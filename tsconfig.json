@@ -1,5 +1,9 @@
 {
     "compilerOptions": {
+        "lib": ["es6"],
+        "resolveJsonModule": true,
+        "strict": true,     
+        "forceConsistentCasingInFileNames": true,
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",

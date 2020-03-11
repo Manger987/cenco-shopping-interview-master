@@ -5,6 +5,7 @@ const logger = require('morgan');
 const normalizePort = require('normalize-port');
 
 const user = require('./routes/user');
+const products = require('./routes/products');
 
 const app = express();
 
@@ -20,9 +21,9 @@ app.get( "/", ( req: any, res: any ) => {
 } );
 
 app.use('/user',user);
-
+app.use('/products',products);
 // start the Express server
 const port = normalizePort(process.env.PORT || '4600');
-app.listen(port, () => console.log('Escuchando por el puerto 3000!!!'));
+app.listen(port, () => console.log(`Escuchando por el puerto ${port}!!!`));
 
 module.exports = app;
