@@ -1,11 +1,19 @@
 import express from 'express';
+import firebase from 'firebase-admin';
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const normalizePort = require('normalize-port');
-
+const serviceAccount = require('./../firebase-service-account.json');
 const user = require('./routes/user');
 const products = require('./routes/products');
+
+require('dotenv').config();
+
+export default firebase.initializeApp({
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: process.env.FIREBASE_DATABASE_URL
+})
 
 const app = express();
 

@@ -17,6 +17,7 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const randomNumber = Math.random();
     console.log('numero', randomNumber);
     if (randomNumber < 0.15) { }
+    // PASAR DESARROLLO A UN UTILS U OTRA CAPA PARA SER RE LLAMADA SI EL % ES MAS BAJO.
     yield axios.get(`https://simple.ripley.cl/api/v2/products?partNumbers=${skuList}`)
         .then((response) => __awaiter(void 0, void 0, void 0, function* () {
         yield res.send(response.data);

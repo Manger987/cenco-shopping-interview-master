@@ -9,7 +9,7 @@ router.get("/", async (req: any, res: any) => {
         const randomNumber = Math.random();
         console.log('numero',randomNumber);
         if (randomNumber < 0.15){}
-        //PASAR DESARROLLO A UN UTILS U OTRA CAPA PARA SER RE LLAMADA SI EL % ES MAS BAJO.
+        // PASAR DESARROLLO A UN UTILS U OTRA CAPA PARA SER RE LLAMADA SI EL % ES MAS BAJO.
         await axios.get(`https://simple.ripley.cl/api/v2/products?partNumbers=${skuList}`)
         .then(async (response: any) => {
             await res.send(response.data);
