@@ -10,8 +10,9 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const normalizePort = require('normalize-port');
 const serviceAccount = require('./../firebase-service-account.json');
-const user = require('./routes/user');
+const auth = require('./routes/auth');
 const products = require('./routes/products');
+const controlLog = require('./utils/logger');
 require('dotenv').config();
 exports.default = firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert(serviceAccount),
@@ -34,7 +35,7 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     res.send("Hello world!");
 });
-app.use('/user', user);
+app.use('/auth', auth);
 app.use('/products', products);
 // start the Express server
 const port = normalizePort(process.env.PORT || '4600');
