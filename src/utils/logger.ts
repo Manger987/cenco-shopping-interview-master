@@ -16,5 +16,4 @@ module.exports = createLogger({
             level: 'debug'
         })
     ]
-})
-console.log('logFile: ', `${__dirname}/../logs/log-RipBack.log`);
+});
