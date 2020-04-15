@@ -17,7 +17,7 @@ const controlLog = require('./../utils/logger');
 const products_services_1 = require("./../services/products.services");
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const skuList = '347851,MPM00005117226,MPM00007573574,MPM00005622268,MPM00001694889,380052';
+        const skuList = '347851,MPM00005117226,MPM00007573574,MPM00005622268,MPM00001694889,380052,2000378676935P';
         for (var i = Math.random(); i < 0.15; i = Math.random()) {
             // Fallo Genera Log. 
             controlLog.info(`Tasa de error es menor al 15%. Tasa Actual es de :${i}`);
@@ -34,23 +34,11 @@ function getProducts(skuList) {
     return __awaiter(this, void 0, void 0, function* () {
         const products = yield redis_1.getDataRedis('products');
         if (products) {
-            console.log('data from redis:', products);
+            // console.log('data from redis:', JSON.parse(products));
             return JSON.parse(products);
         }
         else {
-            const products = yield products_services_1.ProductsServices.getProducts(skuList)
-                .then((response) => __awaiter(this, void 0, void 0, function* () {
-                if (response.data) {
-                    return response.data;
-                }
-                else {
-                    throw 'Error: There are not data of products';
-                }
-            }))
-                .catch((error) => {
-                console.log(error);
-                throw 'Error: There are not data of products';
-            });
+            const products = yield products_services_1.ProductsServices.getProducts(skuList);
             if (products) {
                 if (yield redis_1.setDataRedis('products', JSON.stringify(products))) {
                     return products;

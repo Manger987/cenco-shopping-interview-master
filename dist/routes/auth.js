@@ -13,14 +13,25 @@ const express = require('express');
 const router = express.Router();
 const auth_services_1 = require("./../services/auth.services");
 router.post("/createAuth", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("createAuth:::req:", req.body);
-    const auth = yield auth_services_1.AuthService.createAuthentication(req.body.email, req.body.password);
-    res.json(auth);
+    try {
+        console.log("createAuth:::req:", req.body);
+        const auth = yield auth_services_1.AuthService.createAuthentication(req.body.email, req.body.password);
+        res.json(auth);
+    }
+    catch (error) {
+        console.log('Error catch', error);
+        res.json(error);
+    }
 }));
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("login:::req:", req.body);
-    const user = yield auth_services_1.AuthService.loginEmailUser(req.body.email, req.body.password);
-    res.json(user);
+    try {
+        const user = yield auth_services_1.AuthService.loginEmailUser(req.body.email, req.body.password);
+        yield res.json(user);
+    }
+    catch (error) {
+        console.log('error Auth:', error);
+        yield res.json(error);
+    }
 }));
 router.get("/logOut", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const login = yield auth_services_1.AuthService.logOut();

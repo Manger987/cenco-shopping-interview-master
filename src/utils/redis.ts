@@ -9,6 +9,7 @@ export async function setDataRedis(key: string, value: any) {
 };
 
 export async function getDataRedis(key: string) {
+    // await client.flushall(key);
     let val = await client.get(key);
     return val;
 };

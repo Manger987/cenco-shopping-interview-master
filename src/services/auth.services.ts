@@ -2,43 +2,48 @@ const firebase = require("firebase/app");
 // import "firebase/auth";
 // import "firebase/firestore";
 import axios from 'axios';
+import { DataReturn } from './../model/dataReturn';
+import labels from './../labels.json';
 
 export class AuthService {
 
   static createAuthentication = (email: string, password: string) => {
-    try {
-      console.log('createAuthentication:', email, password);
-      firebase.auth().createUserWithEmailAndPassword(email, password).then((user: any) => {
+      return firebase.auth().createUserWithEmailAndPassword(email, password).then((user: any) => {
         console.log('user registed:', user);
-        return user;
+        const data : DataReturn = {
+          code: 200,
+          message: 'success',
+          data: user
+        }
+        return data;
       })
       .catch(function(error: any) {
-        var errorCode = error.code;
-        throw error;
+        const data : DataReturn = {
+          code: 409,
+          message: labels.Error[409],
+          data: error
+        }
+        console.log('auth service Error', data)
+        throw data;
       });
-    } catch (error) {
-      console.log('error:',error);
-      return error;
-    }
   }
 
   static loginEmailUser = (email: string, password: string) => {
-    try {
-        console.log('service - data:', email, password);
-        firebase.auth().signInWithEmailAndPassword(String(email), String(password)).then((resp: any) => {
-            console.log('responde Service', resp.user);
-            return resp;
-        }).catch(function(error: any) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // ...
-            throw error;
-        });
-    } catch (error) {
-        console.log('error:',error);
-        return error;
-    }
+    return firebase.auth().signInWithEmailAndPassword(String(email), String(password)).then((resp: any) => {
+        const data : DataReturn = {
+          code: 200,
+          message: 'success',
+          data: resp
+        }
+        return data;
+    }).catch(function(error: any) {
+      const data : DataReturn = {
+          code: 401,
+          message: error.message,
+          data: error
+      }
+        throw data;
+    });
   }
   
   static logOut = () => {

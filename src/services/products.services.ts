@@ -6,14 +6,17 @@ export class ProductsServices {
     static getProducts = async (skuList: string) => {
         return await axios.get(`https://simple.ripley.cl/api/v2/products?partNumbers=${skuList}`)
         .then((response: any) => {
-            // console.log('SERVICE: ', response.data);
+            // console.log(response);
             response.data.forEach((element: any) => {
-                // console.log('FOREACH:::',element);  
                 dataProducts.push({
                     id: element.uniqueID,
                     name: element.name,
                     partNumber: element.partNumber,
-                    fullImage: element.fullImage
+                    fullImage: element.fullImage,
+                    images: element.images
+                });
+                element.images.forEach((image: String) => {
+                    console.log('Image::' ,image);
                 });
             })
         return dataProducts;    
