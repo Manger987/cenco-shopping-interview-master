@@ -1,17 +1,16 @@
 import express from 'express';
 // import firebase from 'firebase-admin';
-const firebase = require("firebase/app");
-require("firebase/auth");
-require("firebase/firestore");
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const normalizePort = require('normalize-port');
-const serviceAccount = require('./../firebase-service-account.json');
-const auth = require('./routes/auth');
-const products = require('./routes/products');
-const controlLog = require('./utils/logger');
-const bodyParser = require('body-parser');
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import * as path from 'path';
+import cookieParser from 'cookie-parser';
+// const logger = require('morgan');
+// const normalizePort = require('normalize-port');
+import auth from'./routes/auth';
+import products from './routes/products';
+import bodyParser from "body-parser";
+import { normalizePort } from './utils/general';
 
 require('dotenv').config();
 
@@ -37,7 +36,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -60,6 +59,7 @@ app.get( "/", ( req: any, res: any ) => {
 app.use('/auth',auth);
 app.use('/products',products);
 // start the Express server
+
 const port = normalizePort(process.env.PORT || '4600');
 app.listen(port, () => console.log(`Escuchando por el puerto ${port}!!!`));
 

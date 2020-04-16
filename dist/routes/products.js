@@ -8,19 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const redis_1 = require("./../utils/redis");
-const express = require('express');
-const router = express.Router();
-const axios = require('axios');
-const controlLog = require('./../utils/logger');
+const express_1 = __importDefault(require("express"));
+const app = express_1.default();
+const logger_1 = require("./../utils/logger");
 const products_services_1 = require("./../services/products.services");
-router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const skuList = '347851,MPM00005117226,MPM00007573574,MPM00005622268,MPM00001694889,380052,2000378676935P';
         for (var i = Math.random(); i < 0.15; i = Math.random()) {
             // Fallo Genera Log. 
-            controlLog.info(`Tasa de error es menor al 15%. Tasa Actual es de :${i}`);
+            yield logger_1.controlLog().info(`Tasa de error es menor al 15%. Tasa Actual es de :${i}`);
         }
         // GET PRODUCTS
         res.json(yield getProducts(skuList));
@@ -51,5 +53,5 @@ function getProducts(skuList) {
         }
     });
 }
-module.exports = router;
+exports.default = app;
 //# sourceMappingURL=products.js.map

@@ -9,7 +9,7 @@ class AuthService {
 }
 exports.AuthService = AuthService;
 AuthService.createAuthentication = (email, password) => {
-    firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+    return firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
         console.log('user registed:', user);
         const data = {
             code: 200,
@@ -25,7 +25,7 @@ AuthService.createAuthentication = (email, password) => {
             data: error
         };
         console.log('auth service Error', data);
-        return data;
+        throw data;
     });
 };
 AuthService.loginEmailUser = (email, password) => {

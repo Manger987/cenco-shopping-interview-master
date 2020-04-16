@@ -1,18 +1,17 @@
 import { resolve } from "dns";
 import { setDataRedis, getDataRedis } from './../utils/redis';
-const express = require('express');
-const router  = express.Router();
-const axios = require('axios');
-const controlLog = require('./../utils/logger');
+import express from 'express';
+const app = express();
+import { controlLog } from './../utils/logger';
 
 import { ProductsServices } from './../services/products.services';
 
-router.get("/", async (req: any, res: any) => {
+app.get("/", async (req: any, res: any) => {
     try {
-        const skuList = '347851,MPM00005117226,MPM00007573574,MPM00005622268,MPM00001694889,380052,2000378676935P';
+        const skuList = '347851,MPM00005117226,MPM00007573574,MPM00005622268,MPM00001694889,380052,2000378676935P,2000376896175P,2000378291312P';
         for (var i = Math.random(); i < 0.15; i = Math.random()){
             // Fallo Genera Log. 
-            controlLog.info(`Tasa de error es menor al 15%. Tasa Actual es de :${i}`);
+            await controlLog().info(`Tasa de error es menor al 15%. Tasa Actual es de :${i}`);
         }    
         // GET PRODUCTS
         res.json(await getProducts(skuList));
@@ -40,4 +39,4 @@ async function getProducts(skuList: string) {
     }
 }
 
-module.exports = router;
+export default app;

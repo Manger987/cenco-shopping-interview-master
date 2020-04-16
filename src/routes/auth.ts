@@ -1,9 +1,9 @@
 
-const express = require('express');
-const router  = express.Router();
+import express from 'express';
+const app = express();
 import { AuthService } from './../services/auth.services';
 
-router.post("/createAuth", async (req: any, res: any) => {
+app.post("/createAuth", async (req: any, res: any) => {
     try{
         console.log("createAuth:::req:",req.body);
         const auth = await AuthService.createAuthentication(req.body.email, req.body.password);
@@ -14,7 +14,7 @@ router.post("/createAuth", async (req: any, res: any) => {
     }
 });
 
-router.post("/login", async (req: any, res: any) => {
+app.post("/login", async (req: any, res: any) => {
     try {
         const user = await AuthService.loginEmailUser(req.body.email, req.body.password);
         await res.json(user);
@@ -24,10 +24,10 @@ router.post("/login", async (req: any, res: any) => {
     }
 });
 
-router.get("/logOut",async (req: any, res: any) => {
+app.get("/logOut",async (req: any, res: any) => {
     const login = await AuthService.logOut();
     console.log("logOut: ",login)
     res.json(login);
 });
 
-module.exports = router;
+export default app;

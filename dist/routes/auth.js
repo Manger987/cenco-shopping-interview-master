@@ -8,22 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require('express');
-const router = express.Router();
+const express_1 = __importDefault(require("express"));
+const app = express_1.default();
 const auth_services_1 = require("./../services/auth.services");
-router.post("/createAuth", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/createAuth", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("createAuth:::req:", req.body);
         const auth = yield auth_services_1.AuthService.createAuthentication(req.body.email, req.body.password);
-        res.json(auth);
+        yield res.json(auth);
     }
     catch (error) {
-        console.log('Error catch', error);
-        res.json(error);
+        console.log('Error auth/createAuth', error);
+        yield res.json(error);
     }
 }));
-router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield auth_services_1.AuthService.loginEmailUser(req.body.email, req.body.password);
         yield res.json(user);
@@ -33,10 +36,10 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         yield res.json(error);
     }
 }));
-router.get("/logOut", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/logOut", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const login = yield auth_services_1.AuthService.logOut();
     console.log("logOut: ", login);
     res.json(login);
 }));
-module.exports = router;
+exports.default = app;
 //# sourceMappingURL=auth.js.map
