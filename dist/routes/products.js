@@ -19,7 +19,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import { setDataRedis, getDataRedis } from './../utils/redis';
 const express_1 = __importDefault(require("express"));
 const redis = __importStar(require("redis"));
 // Redis Configurate
@@ -37,7 +36,6 @@ app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         client.get('products', (error, products) => __awaiter(void 0, void 0, void 0, function* () {
             if (!error && products) {
-                console.log('Productsss:::', JSON.parse(products));
                 res.json(JSON.parse(products));
             }
             else {
@@ -54,7 +52,7 @@ function getProducts(skuList) {
     return __awaiter(this, void 0, void 0, function* () {
         const products = yield products_services_1.ProductsServices.getProducts(skuList);
         if (products) {
-            if (client.setex('products', 60, JSON.stringify(products))) {
+            if (client.set('products', JSON.stringify(products), 'EX', 120)) {
                 return products;
             }
             else {

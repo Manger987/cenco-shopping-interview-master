@@ -59,6 +59,8 @@ app.use('/auth', auth_1.default);
 app.use('/products', products_1.default);
 // start the Express server
 const port = general_1.normalizePort(process.env.PORT || '4600');
-app.listen(port, () => console.log(`Escuchando por el puerto ${port}!!!`));
+app.listen(port, () => {
+    // console.log(`Escuchando por el puerto ${port}!!!`)
+});
 module.exports = app;
 //# sourceMappingURL=index.js.map

@@ -8,16 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const axios = require('axios');
+const axios_1 = __importDefault(require("axios"));
 const dataProducts = [];
 class ProductsServices {
 }
 exports.ProductsServices = ProductsServices;
 ProductsServices.getProducts = (skuList) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield axios.get(`https://simple.ripley.cl/api/v2/products?partNumbers=${skuList}`)
+    return yield axios_1.default.get(`https://simple.ripley.cl/api/v2/products?partNumbers=${skuList}`)
         .then((response) => {
-        // console.log(response);
         response.data.forEach((element) => {
             dataProducts.push({
                 id: element.uniqueID,
@@ -26,9 +28,9 @@ ProductsServices.getProducts = (skuList) => __awaiter(void 0, void 0, void 0, fu
                 fullImage: element.fullImage,
                 images: element.images
             });
-            element.images.forEach((image) => {
-                console.log('Image::', image);
-            });
+            // element.images.forEach((image: string) => {
+            //     console.log('Image::' ,image);
+            // });
         });
         return dataProducts;
     });
