@@ -1,16 +1,22 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const firebase = require("firebase/app");
+const firebase = __importStar(require("firebase/app"));
 const labels_json_1 = __importDefault(require("./../labels.json"));
 class AuthService {
 }
 exports.AuthService = AuthService;
 AuthService.createAuthentication = (email, password) => {
     return firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
-        console.log('user registed:', user);
         const data = {
             code: 200,
             message: 'success',
@@ -18,13 +24,12 @@ AuthService.createAuthentication = (email, password) => {
         };
         return data;
     })
-        .catch(function (error) {
+        .catch((error) => {
         const data = {
             code: 409,
             message: labels_json_1.default.Error[409],
             data: error
         };
-        console.log('auth service Error', data);
         throw data;
     });
 };
@@ -36,7 +41,7 @@ AuthService.loginEmailUser = (email, password) => {
             data: resp
         };
         return data;
-    }).catch(function (error) {
+    }).catch((error) => {
         const data = {
             code: 401,
             message: error.message,
@@ -46,11 +51,10 @@ AuthService.loginEmailUser = (email, password) => {
     });
 };
 AuthService.logOut = () => {
-    firebase.auth().signOut().then(function () {
+    firebase.auth().signOut().then(() => {
         // Sign-out successful.
-        console.log('logout true');
         return { logout: true };
-    }).catch(function (error) {
+    }).catch((error) => {
         return { logout: false, error: error };
     });
 };

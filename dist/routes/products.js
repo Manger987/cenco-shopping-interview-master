@@ -11,44 +11,54 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const redis_1 = require("./../utils/redis");
+// import { setDataRedis, getDataRedis } from './../utils/redis';
 const express_1 = __importDefault(require("express"));
+const redis = __importStar(require("redis"));
+// Redis Configurate
+const client = redis.createClient(6379);
 const app = express_1.default();
 const logger_1 = require("./../utils/logger");
 const products_services_1 = require("./../services/products.services");
+const labels_json_1 = __importDefault(require("./../labels.json"));
 app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const skuList = '347851,MPM00005117226,MPM00007573574,MPM00005622268,MPM00001694889,380052,2000378676935P';
+        const skuList = '347851,MPM00005117226,MPM00007573574,MPM00005622268,MPM00001694889,380052,2000378676935P,2000376896175P,2000378291312P';
         for (var i = Math.random(); i < 0.15; i = Math.random()) {
             // Fallo Genera Log. 
             yield logger_1.controlLog().info(`Tasa de error es menor al 15%. Tasa Actual es de :${i}`);
         }
-        // GET PRODUCTS
-        res.json(yield getProducts(skuList));
+        client.get('products', (error, products) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!error && products) {
+                console.log('Productsss:::', JSON.parse(products));
+                res.json(JSON.parse(products));
+            }
+            else {
+                // GET PRODUCTS
+                res.json(yield getProducts(skuList));
+            }
+        }));
     }
     catch (error) {
-        console.log('Error: in products Router', error);
         res.json(error);
     }
 }));
 function getProducts(skuList) {
     return __awaiter(this, void 0, void 0, function* () {
-        const products = yield redis_1.getDataRedis('products');
+        const products = yield products_services_1.ProductsServices.getProducts(skuList);
         if (products) {
-            // console.log('data from redis:', JSON.parse(products));
-            return JSON.parse(products);
-        }
-        else {
-            const products = yield products_services_1.ProductsServices.getProducts(skuList);
-            if (products) {
-                if (yield redis_1.setDataRedis('products', JSON.stringify(products))) {
-                    return products;
-                }
-                else {
-                    // MAKE LABELS FILE TO CONTROL OF ERRORS
-                    throw 'Error seting data in Redis';
-                }
+            if (client.setex('products', 60, JSON.stringify(products))) {
+                return products;
+            }
+            else {
+                throw labels_json_1.default.Error.redis_set;
             }
         }
     });

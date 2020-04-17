@@ -17,12 +17,10 @@ const app = express_1.default();
 const auth_services_1 = require("./../services/auth.services");
 app.post("/createAuth", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("createAuth:::req:", req.body);
         const auth = yield auth_services_1.AuthService.createAuthentication(req.body.email, req.body.password);
         yield res.json(auth);
     }
     catch (error) {
-        console.log('Error auth/createAuth', error);
         yield res.json(error);
     }
 }));
@@ -32,13 +30,11 @@ app.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         yield res.json(user);
     }
     catch (error) {
-        console.log('error Auth:', error);
         yield res.json(error);
     }
 }));
 app.get("/logOut", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const login = yield auth_services_1.AuthService.logOut();
-    console.log("logOut: ", login);
     res.json(login);
 }));
 exports.default = app;

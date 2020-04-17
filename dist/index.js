@@ -23,7 +23,7 @@ const auth_1 = __importDefault(require("./routes/auth"));
 const products_1 = __importDefault(require("./routes/products"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const general_1 = require("./utils/general");
-require('dotenv').config();
+require("@babel/polyfill");
 const firebaseConfig = {
     apiKey: "AIzaSyBLR8y6LmljgrvLjVAx9b9IdHxG-Vz26xk",
     authDomain: "rip-project-be8db.firebaseapp.com",
@@ -36,10 +36,6 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-// export default firebase.initializeApp({
-//   credential: firebase.credential.cert(serviceAccount),
-//   databaseURL: process.env.FIREBASE_DATABASE_URL
-// })
 const app = express_1.default();
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));

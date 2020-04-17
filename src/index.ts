@@ -11,8 +11,7 @@ import auth from'./routes/auth';
 import products from './routes/products';
 import bodyParser from "body-parser";
 import { normalizePort } from './utils/general';
-
-require('dotenv').config();
+import "@babel/polyfill";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLR8y6LmljgrvLjVAx9b9IdHxG-Vz26xk",
@@ -26,11 +25,6 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-// export default firebase.initializeApp({
-//   credential: firebase.credential.cert(serviceAccount),
-//   databaseURL: process.env.FIREBASE_DATABASE_URL
-// })
 
 const app = express();
 

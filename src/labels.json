@@ -1,5 +1,6 @@
 {
     "Error" : {
-        "409" : "already exist this user registed"
+        "409" : "already exist this user registed",
+        "redis_set": "Error seting data in Redis"
     }
 }

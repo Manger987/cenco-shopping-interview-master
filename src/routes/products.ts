@@ -1,10 +1,11 @@
-import { resolve } from "dns";
-import { setDataRedis, getDataRedis } from './../utils/redis';
 import express from 'express';
+import * as redis from 'redis';
+// Redis Configurate
+const client = redis.createClient(6379);
 const app = express();
 import { controlLog } from './../utils/logger';
-
 import { ProductsServices } from './../services/products.services';
+import labels from './../labels.json';
 
 app.get("/", async (req: any, res: any) => {
     try {
@@ -13,28 +14,29 @@ app.get("/", async (req: any, res: any) => {
             // Fallo Genera Log. 
             await controlLog().info(`Tasa de error es menor al 15%. Tasa Actual es de :${i}`);
         }    
-        // GET PRODUCTS
-        res.json(await getProducts(skuList));
+
+        client.get('products', async (error, products) => {
+            if (!error && products) {
+                res.json(JSON.parse(products));
+            } else {
+                // GET PRODUCTS
+                res.json(await getProducts(skuList));
+            } 
+        })
+        
     } catch (error) {
-        console.log('Error: in products Router', error);
         res.json(error);
     }
 });
 
 async function getProducts(skuList: string) {
-    const products = await getDataRedis('products');
-    if (products) {
-        // console.log('data from redis:', JSON.parse(products));
-        return JSON.parse(products);
-    } else {
-        const products = await ProductsServices.getProducts(skuList);
-        if (products){
-            if (await setDataRedis('products', JSON.stringify(products))) {
-                return products;
-            } else {
-                // MAKE LABELS FILE TO CONTROL OF ERRORS
-                throw 'Error seting data in Redis';
-            }
+
+    const products = await ProductsServices.getProducts(skuList);
+    if (products){
+        if (client.set('products', JSON.stringify(products), 'EX', 120)) {
+            return products;
+        } else {
+            throw labels.Error.redis_set;
         }
     }
 }

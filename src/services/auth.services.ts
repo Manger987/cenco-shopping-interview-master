@@ -1,4 +1,4 @@
-const firebase = require("firebase/app");
+import * as firebase from "firebase/app";
 // import "firebase/auth";
 // import "firebase/firestore";
 import axios from 'axios';
@@ -9,7 +9,6 @@ export class AuthService {
 
   static createAuthentication = (email: string, password: string) => {
       return firebase.auth().createUserWithEmailAndPassword(email, password).then((user: any) => {
-        console.log('user registed:', user);
         const data : DataReturn = {
           code: 200,
           message: 'success',
@@ -17,13 +16,12 @@ export class AuthService {
         }
         return data;
       })
-      .catch(function(error: any) {
+      .catch((error: any) => {
         const data : DataReturn = {
           code: 409,
           message: labels.Error[409],
           data: error
         }
-        console.log('auth service Error', data)
         throw data;
       });
   }
@@ -36,7 +34,7 @@ export class AuthService {
           data: resp
         }
         return data;
-    }).catch(function(error: any) {
+    }).catch((error: any) => {
       const data : DataReturn = {
           code: 401,
           message: error.message,
@@ -47,11 +45,10 @@ export class AuthService {
   }
   
   static logOut = () => {
-    firebase.auth().signOut().then(function() {
+    firebase.auth().signOut().then(() => {
       // Sign-out successful.
-      console.log('logout true');
       return {logout: true}
-    }).catch(function(error: any) {
+    }).catch((error: any) => {
       return {logout: false, error: error};
     });
   }
