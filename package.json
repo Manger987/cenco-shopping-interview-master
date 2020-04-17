@@ -1,11 +1,13 @@
 {
   "name": "ripley-back",
   "version": "1.0.0",
+  "engines": {
+    "node": "13.12.0"
+  },
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc --build && nodemon src/index.ts",
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
