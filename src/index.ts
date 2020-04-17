@@ -55,6 +55,8 @@ app.use('/products',products);
 // start the Express server
 
 const port = normalizePort(process.env.PORT || '4600');
-app.listen(port, () => console.log(`Escuchando por el puerto ${port}!!!`));
+app.listen(port, () => {
+// console.log(`Escuchando por el puerto ${port}!!!`)
+});
 
 module.exports = app;
