@@ -7,8 +7,10 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "tsc": "tsc",
     "start": "tsc --build && nodemon src/index.ts",
     "build": "tsc",
+    "postinstall": "npm run tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
