@@ -1,8 +1,7 @@
 
 export interface Product{
-    id: string;
+    code: string;
     name: string;
-    partNumber: string;
-    fullImage: string;
-    images?: any;
+    price: number;
+    discount: number;
 }
